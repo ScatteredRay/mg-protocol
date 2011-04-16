@@ -6,14 +6,34 @@ message BuildBegin {
     required string ConfigName = 5;
     required string SDK = 6;
 
+    // Check size of this before sending, should be pretty small.
     required bytes Certificate = 7;
 }
 
+message BuildRequest {
+    enum RequestType {
+        Begin = 1;
+    }
+    required RequestType Type = 1;
+    optional BuildBegin Begin = 2;
+}
+
 message BuildSuccess {
-    required bytes IPA = 1;
-    required bytes Manifest = 2;
+    //required bytes IPA = 1;
+    //required bytes Manifest = 2;
 }
 
 message BuildFailure {
     required string ErrorMessage = 1;
+}
+
+message BuildResponse {
+    enum ResponseType {
+        Success = 1;
+        Failure = 2;
+        // Bulk data responses.
+    }
+    required ResponseType Type = 1;
+    optional BuildSuccess Success = 2;
+    optional BuildFailure Failure = 3;
 }

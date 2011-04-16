@@ -8,16 +8,36 @@
 #     required string ConfigName = 5;
 #     required string SDK = 6;
 # 
+#     // Check size of this before sending, should be pretty small.
 #     required bytes Certificate = 7;
 # }
 # 
+# message BuildRequest {
+#     enum RequestType {
+#         Begin = 1;
+#     }
+#     required RequestType Type = 1;
+#     optional BuildBegin Begin = 2;
+# }
+# 
 # message BuildSuccess {
-#     required bytes IPA = 1;
-#     required bytes Manifest = 2;
+#     //required bytes IPA = 1;
+#     //required bytes Manifest = 2;
 # }
 # 
 # message BuildFailure {
 #     required string ErrorMessage = 1;
+# }
+# 
+# message BuildResponse {
+#     enum ResponseType {
+#         Success = 1;
+#         Failure = 2;
+#         // Bulk data responses.
+#     }
+#     required ResponseType Type = 1;
+#     optional BuildSuccess Success = 2;
+#     optional BuildFailure Failure = 3;
 # }
 
 require 'protobuf/message/message'
@@ -35,12 +55,30 @@ class BuildBegin < ::Protobuf::Message
   required :string, :SDK, 6
   required :bytes, :Certificate, 7
 end
+class BuildRequest < ::Protobuf::Message
+  defined_in __FILE__
+  class RequestType < ::Protobuf::Enum
+    defined_in __FILE__
+    Begin = value(:Begin, 1)
+  end
+  required :RequestType, :Type, 1
+  optional :BuildBegin, :Begin, 2
+end
 class BuildSuccess < ::Protobuf::Message
   defined_in __FILE__
-  required :bytes, :IPA, 1
-  required :bytes, :Manifest, 2
 end
 class BuildFailure < ::Protobuf::Message
   defined_in __FILE__
   required :string, :ErrorMessage, 1
+end
+class BuildResponse < ::Protobuf::Message
+  defined_in __FILE__
+  class ResponseType < ::Protobuf::Enum
+    defined_in __FILE__
+    Success = value(:Success, 1)
+    Failure = value(:Failure, 2)
+  end
+  required :ResponseType, :Type, 1
+  optional :BuildSuccess, :Success, 2
+  optional :BuildFailure, :Failure, 3
 end
