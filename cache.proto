@@ -1,0 +1,18 @@
+message GitRepoReference {
+        required string GitRepo = 1;
+}
+
+message DiffReference {
+}
+
+message CacheReference {
+    // The basic thought is that you can have one Diff, and one of any of the
+    // other repo sources, it's simple, but we can worry about expanding it
+    // if we can ever think of more complicated scenario's later.
+    optional DiffReference Diff = 1;
+    enum RepoType {
+        Repo_Git = 1;
+    }
+    required RepoType Repo = 2;
+    optional GitRepoReference Git = 3;
+}

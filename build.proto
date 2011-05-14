@@ -1,18 +1,23 @@
+import "cache.proto";
+
 message BuildBegin {
-    required string GitRepo = 1;
-    optional string Diff = 2;
-    required string Project = 3;
-    required string Target = 4;
-    required string ConfigName = 5;
-    required string SDK = 6;
+    // This tightly couples the binary interface of the builds to the cache, it
+    // might be cleaner to make this just a 'bytes' field and pass it around
+    // without types.
+    required CacheReference SourceCache = 1;
+    required string Project = 2;
+    // This config data should be abstracted out, because it's xcode specific.
+    required string Target = 3;
+    required string ConfigName = 4;
+    required string SDK = 5;
 
     // Check size of this before sending, should be pretty small.
-    required bytes Certificate = 7;
+    required bytes Certificate = 6;
 }
 
 message BuildRequest {
     enum RequestType {
-        Begin = 1;
+        Request_Begin = 1;
     }
     required RequestType Type = 1;
     optional BuildBegin Begin = 2;
@@ -29,8 +34,8 @@ message BuildFailure {
 
 message BuildResponse {
     enum ResponseType {
-        Success = 1;
-        Failure = 2;
+        Response_Success = 1;
+        Response_Failure = 2;
         // Bulk data responses.
     }
     required ResponseType Type = 1;
