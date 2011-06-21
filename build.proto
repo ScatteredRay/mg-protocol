@@ -13,6 +13,7 @@ message BuildBegin {
 
     // Check size of this before sending, should be pretty small.
     required bytes Certificate = 6;
+    required bytes ProvisioningProfile = 7;
 }
 
 message BuildRequest {

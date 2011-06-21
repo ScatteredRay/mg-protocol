@@ -15,6 +15,7 @@
 # 
 #     // Check size of this before sending, should be pretty small.
 #     required bytes Certificate = 6;
+#     required bytes ProvisioningProfile = 7;
 # }
 # 
 # message BuildRequest {
@@ -50,7 +51,8 @@ require 'protobuf/message/enum'
 require 'protobuf/message/service'
 require 'protobuf/message/extend'
 
-require 'cache.pb'
+# @HACK
+require 'protocol/cache.pb'
 class BuildBegin < ::Protobuf::Message
   defined_in __FILE__
   required :CacheReference, :SourceCache, 1
@@ -59,6 +61,7 @@ class BuildBegin < ::Protobuf::Message
   required :string, :ConfigName, 4
   required :string, :SDK, 5
   required :bytes, :Certificate, 6
+  required :bytes, :ProvisioningProfile, 7
 end
 class BuildRequest < ::Protobuf::Message
   defined_in __FILE__
